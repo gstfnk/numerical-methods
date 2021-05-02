@@ -1,5 +1,6 @@
 import numpy
 
+
 def choleskyLt(A):
     n = len(A)
     L = [0] * n
@@ -22,6 +23,7 @@ def choleskyLt(A):
             Lt[i][j] = L[j][i]
 
     return Lt
+
 
 def choleskyL(A):
     n = len(A)
@@ -71,10 +73,9 @@ def upper_triangular(U, b):
 
 
 def leastSquaresMethod(x, y, n):
-    # Cel 1
-    dlugosc = n + 1
+    polynomial_length = n + 1
     Xsum = [0] * (2 * n)
-    Ysum = [0] * dlugosc
+    Ysum = [0] * polynomial_length
 
     for i in range(1, (2 * n) + 1):
         tmp = 0
@@ -83,30 +84,28 @@ def leastSquaresMethod(x, y, n):
         index = i - 1
         Xsum[index] = tmp
 
-    for i in range(1, dlugosc + 1):
+    for i in range(1, polynomial_length + 1):
         tmp = 0
         for j in range(0, len(x)):
             tmp = tmp + ((x[j] ** (i - 1)) * y[j])
         index = i - 1
         Ysum[index] = tmp
 
-    A = [0] * dlugosc
-    for i in range(0, dlugosc):
-        A[i] = [0] * dlugosc
+    A = [0] * polynomial_length
+    for i in range(0, polynomial_length):
+        A[i] = [0] * polynomial_length
 
     A[0][0] = len(x)
 
-    for i in range(1, dlugosc):
+    for i in range(1, polynomial_length):
         A[0][i] = Xsum[i - 1]
 
-    for i in range(1, dlugosc):
-        for j in range(0, dlugosc):
+    for i in range(1, polynomial_length):
+        for j in range(0, polynomial_length):
             A[i][j] = Xsum[i + j - 1]
 
     output = upper_triangular(choleskyLt(A),
-                              lower_triangular(
-                                           choleskyL(A), Ysum)
-                              )
+                              lower_triangular(choleskyL(A), Ysum))
 
     return output
 
